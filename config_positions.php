@@ -1,8 +1,9 @@
 <?php
-$servername = "27.254.81.41";
-$username = "root";
-$password = "Ple01010!@#";
-$db="traccar_1";
+// connect database 
+$servername = ""; 
+$username = "";
+$password = "";
+$db="";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $db);
