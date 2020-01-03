@@ -5,6 +5,7 @@
 require 'all_function.php';
 require 'real_dlt.php';
 require 'real_post.php';
+require 'real_sugar.php';
 date_default_timezone_set('Asia/Bangkok');
 
 // get agrument for select function

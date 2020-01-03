@@ -34,12 +34,32 @@ function log_realtime($result, $what){
         $code = $result_json->code;
         $what_connect = $what;
         $message = isset($result_json->message) ? $result_json->message : '';
-        $reviced_records = isset($result_json->reviced_records) ? $result_json->reviced_records : '';
+        $received_records = isset($result_json->received_records) ? $result_json->received_records : '';
         $message_reject = isset($result_json->message_reject) ? $result_json->message_reject : '';
         $reject_records = isset($result_json->reject_records) ? $result_json->reject_records : '';
         $reject_data = isset($result_json->reject_data) ? $result_json->reject_data : '';
         $reject_dataJson = json_encode($reject_data);
-        $sql_insertlog = "INSERT INTO `log_realtime` VALUES ('',NOW(),'$what_connect','$code','$message','$reviced_records','$message_reject','$reject_records', '$reject_dataJson')";
+        $sql_insertlog = "INSERT INTO `log_realtime` VALUES ('',NOW(),'$what_connect','$code','$message','$received_records','$message_reject','$reject_records', '$reject_dataJson')";
+        $qr_insertlog = $conn->query($sql_insertlog);
+    }
+}
+
+
+function log_realtime_sugar($result, $what){
+    require 'config_positions.php';
+    $result_json = json_decode($result);
+    print_r($result_json);
+    if (isset($result_json->what)) { 
+
+        $code = isset($result_json->code) ? $result_json->code : 0;
+        $what_connect = $what;
+        $message = isset($result_json->what) ? $result_json->what : '';
+        $received_records = isset($result_json->received_records) ? $result_json->received_records : '';
+        $message_reject = isset($result_json->message_reject) ? $result_json->message_reject : '';
+        $reject_records = isset($result_json->reject_records) ? $result_json->reject_records : '';
+        $reject_data = isset($result_json->reject_data) ? $result_json->reject_data : '';
+        $reject_dataJson = json_encode($reject_data);
+        $sql_insertlog = "INSERT INTO `log_realtime` VALUES ('',NOW(),'$what_connect','$code','$message','$received_records','$message_reject','$reject_records', '$reject_dataJson')";
         $qr_insertlog = $conn->query($sql_insertlog);
     }
 }
@@ -86,7 +106,7 @@ function get_driverId($licenseParam)
     } else {
         $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,$licenseParam)";
         $qr_insertlog = $conn->query($sql_logLicense);
-        return '';
+        return $licenseParam;
     }
 }
 
@@ -99,6 +119,13 @@ function get_jsonattributes($attributes)
 function get_unitId($vender, $imei)
 {
     $unitImei = str_pad($imei, 20, "0", STR_PAD_LEFT);
+    $unit_id = $vender . $unitImei;
+    $unit_id = trim($unit_id);
+    return $unit_id;
+}
+
+function get_unitId_sugar($vender, $imei){
+    $unitImei = str_pad($imei, 19, "0", STR_PAD_LEFT);
     $unit_id = $vender . $unitImei;
     $unit_id = trim($unit_id);
     return $unit_id;

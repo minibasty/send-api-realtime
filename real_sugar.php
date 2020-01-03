@@ -7,8 +7,8 @@ function real_sugar($configKey, $configValue)
     $apiKey = '00987004FW307fvOWAKSSD'; // should match with Server key
 
     //vender id 
-    $vender_id = "84";
-    $vender_3bit = "084";
+    $vender_id = "GREENBOX";
+    $vender_3bit = "GREENBOX";
 
     //SQL for positions
     $sql_position = "SELECT
@@ -43,7 +43,7 @@ function real_sugar($configKey, $configValue)
 
             // รหัส 4 ตัวท้ายเก็บจาก ฟิล type
             $device_type = str_pad($row_positions['type'], 4, "0", STR_PAD_LEFT);
-            $vender_code = $vender_3bit . $device_type; //first unit_id
+            $vender_code = $vender_3bit; //first unit_id
 
             // คำนวณความต่างของเวลาเครื่องกับเวลาปุจจับัน
             $time_interval = round(abs($to_time - $from_time) / 60, 2);
@@ -64,7 +64,7 @@ function real_sugar($configKey, $configValue)
                     $imei = $row_positions['uniqueid'];
                 }
 
-                $unit_id = get_unitId($vender_code, $imei); //unit_id
+                $unit_id = get_unitId_sugar($vender_code, $imei); //unit_id
                 $hdop = property_exists($attributesJson, 'hdop') ? round($attributesJson->hdop) : 0; //hdop
 
                 if (property_exists($attributesJson, 'status')) {
@@ -107,7 +107,7 @@ function real_sugar($configKey, $configValue)
         $data_array = array('vender_id' => $vender_id, 'locations_count' => $locations_count, 'locations' => $location_array);
         $data_arrayJson = json_encode($data_array);
         $send_res = raeltime_api($data_arrayJson, $url, $apiKey, 1);
-        log_realtime($send_res, "sugar");
+        log_realtime_sugar($send_res, "sugar");
     } //end if ($locations_count) {
 
     // update Config In database
