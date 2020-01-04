@@ -69,14 +69,29 @@ function get_driverId($licenseParam)
     require 'config_positions.php';
     $countStr = strlen($licenseParam);
 
-    if ($countStr == 112) {
-        $license = substr($licenseParam, 49, 41);
-        $license = str_replace(' ', '', trim($license));
-        return $license;
-    } elseif ($countStr == 115) {
-        $license = substr($licenseParam, 49, 44);
-        $license = str_replace(' ', '', trim($license));
-        return $license;
+    if ($countStr >= 112) {
+
+        //";6007643200200516551=220119571016=?+             22            1            0069552  20302                     ???"
+        //";6007641200100638801=201219960426=?+             12            1            0064560  20300                     ?"
+
+        $license = explode("?",$licenseParam);
+        $license = $license['1']; //"+             12            1            0064560  20300                     "
+        $license = explode("+",$license);
+        $license = $license['1']; //"             12            1            0064560  20300                     "
+        $licenseFinal = str_replace(' ', '', trim($license));
+        if (is_numeric($licenseFinal)) {
+            if (strlen($licenseFinal) >= 15) {
+                return $licenseFinal;
+            }else{
+                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+                $qr_insertlog = $conn->query($sql_logLicense);
+                return $licenseFinal;
+            }
+        }else{
+            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+            $qr_insertlog = $conn->query($sql_logLicense);
+            return '';
+        }
     } elseif ($countStr == 110) {
         $license = substr($licenseParam, 49, 39);
         $license = str_replace(' ', '', trim($license));
@@ -97,16 +112,35 @@ function get_driverId($licenseParam)
         $license = substr($licenseParam, 4, 44);
         $license = str_replace(' ', '', trim($license));
         return $license;
-    } elseif ($countStr == 74 or $countStr == 77) {
+    } elseif ($countStr == 74 or $countStr == 77 or $countStr == 75) {
+        // count 75 //"             23            1            0002261  60501                     "
+        // count 74 //"            23            1            0002149  40900                     "
         $license = $licenseParam;
         $license = str_replace(' ', '', trim($license));
         return $license;
     } elseif ($countStr == 0) {
         return '';
     } else {
-        $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,$licenseParam)";
-        $qr_insertlog = $conn->query($sql_logLicense);
-        return $licenseParam;
+        $license = $licenseParam;
+        $license = explode(' ',trim($license));
+        $license = array_slice($license,3,59);
+        $license = array_slice($license,3,59);
+        $licenseStr = implode("",$license);
+        if (is_numeric($licenseStr)) {
+            if (strlen($licenseStr) >= 15) {
+                return $licenseStr;
+            }else{
+                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+                $qr_insertlog = $conn->query($sql_logLicense);
+                return $licenseStr;
+            }
+        }else{
+            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+            $qr_insertlog = $conn->query($sql_logLicense);
+            return '';
+        }
+        
+        
     }
 }
 
