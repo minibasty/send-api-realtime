@@ -4,6 +4,7 @@
 // require_once 'config_positions.php';
 require 'all_function.php';
 require 'real_dlt.php';
+require 'real_dlt2.php';
 require 'real_post.php';
 require 'real_sugar.php';
 date_default_timezone_set('Asia/Bangkok');

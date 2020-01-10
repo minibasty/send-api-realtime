@@ -32,12 +32,13 @@ function real_sugar($configKey, $configValue)
     $locations_countBackup = 0;
 
     while ($row_positions = $qr_positions->fetch_assoc()) {
+        $position_id = $row_positions['id'];
         if ($row_positions['connect_sugar']) {
 
             // check protocol
             $protocol_value = $row_positions['protocol'];
             $ext_power_status = 0;
-            $position_id = $row_positions['id'];
+            
             $to_time = strtotime(date("Y-m-d H:i:s"));
             $from_time = strtotime($row_positions['devicetime']);
 
