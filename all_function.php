@@ -64,16 +64,16 @@ function log_realtime_sugar($result, $what){
     }
 }
 
-function get_driverId($licenseParam)
+function get_driverId($licenseParam, $position)
 {
     require 'config_positions.php';
     $countStr = strlen($licenseParam);
 
-    if ($countStr >= 111) {
+    if ($countStr >= 96) {
         
         //";6007643200200516551=220119571016=?+             22            1            0069552  20302                     ???"
         //";6007641200100638801=201219960426=?+             12            1            0064560  20300                     ?"
-
+        //;600764=230219750809=?+             12            1            0006654  20300                     ?
         $license = explode("?",$licenseParam);
         $license = $license['1']; //"+             12            1            0064560  20300                     "
         $license = explode("+",$license);
@@ -83,20 +83,22 @@ function get_driverId($licenseParam)
             if (strlen($licenseFinal) >= 15) {
                 return $licenseFinal;
             }else{
-                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$position,$countStr,'$licenseParam')";
                 $qr_insertlog = $conn->query($sql_logLicense);
                 return $licenseFinal;
             }
         }else{
-            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$position,$countStr,'$licenseParam')";
             $qr_insertlog = $conn->query($sql_logLicense);
             return '';
         }
-    } elseif ($countStr == 110) {
-        $license = substr($licenseParam, 49, 39);
-        $license = str_replace(' ', '', trim($license));
-        return $license;
-    } elseif ($countStr == 65) {
+    } 
+    // elseif ($countStr == 99) {
+    //     $license = substr($licenseParam, 49, 39);
+    //     $license = str_replace(' ', '', trim($license));
+    //     return $license;
+    // } 
+    elseif ($countStr == 65) {
         $license = substr($licenseParam, 3, 41);
         $license = str_replace(' ', '', trim($license));
         return $license;
@@ -112,11 +114,13 @@ function get_driverId($licenseParam)
         $license = substr($licenseParam, 4, 44);
         $license = str_replace(' ', '', trim($license));
         return $license;
-    } elseif ($countStr == 74 or $countStr == 77 or $countStr == 75 or $countStr == 78 or $countStr == 72) {
+    } elseif ($countStr == 74 or $countStr == 77 or $countStr == 75 or $countStr == 78 or $countStr == 72 or $countStr == 36 $countStr == 71) {
         // count 72 //"          22            1            0002461  60602                     "
         // count 75 //"             23            1            0002261  60501                     "
         // count 74 //"            23            1            0002149  40900                     "
         // count 78 //"             2400            1            54000927  40900                     "
+        // count 36 //"22       1            0021256  50203"
+        // count 71 //"%       24            1            0002762  40700                     ?"
         $license = $licenseParam;
         $license = str_replace(' ', '', trim($license));
         return $license;
@@ -132,12 +136,12 @@ function get_driverId($licenseParam)
             if (strlen($licenseStr) >= 15) {
                 return $licenseStr;
             }else{
-                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+                $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$position,$countStr,'$licenseParam')";
                 $qr_insertlog = $conn->query($sql_logLicense);
                 return $licenseStr;
             }
         }else{
-            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$countStr,'$licenseParam')";
+            $sql_logLicense="INSERT INTO `log_driverLicense` VALUES ('',NOW(),$position,$countStr,'$licenseParam')";
             $qr_insertlog = $conn->query($sql_logLicense);
             return '';
         }

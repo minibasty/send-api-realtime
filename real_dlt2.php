@@ -56,7 +56,7 @@ function real_dlt2($configKey, $configValue)
 
 
                 if (property_exists($attributesJson, 'driverUniqueId')) {
-                    $driverLicense = get_driverId($attributesJson->driverUniqueId);  //driverLicense
+                    $driverLicense = get_driverId($attributesJson->driverUniqueId, $position_id);  //driverLicense
                 }
 
                 $date_utc_ts = dateTimeUTC($row_positions['devicetime']); //date_utc_ts

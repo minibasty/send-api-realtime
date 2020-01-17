@@ -54,7 +54,7 @@ function real_dlt($configKey, $configValue)
                 // ค่า attributes แปลง Json
                 $attributesJson = get_jsonattributes($row_positions['attributes']);
 
-                $driverLicense = get_driverId($row_positions['driverLicense']);  //driverLicense
+                $driverLicense = get_driverId($row_positions['driverLicense'],$position_id);  //driverLicense
 
                 $date_utc_ts = dateTimeUTC($row_positions['devicetime']); //date_utc_ts
                 $date_recv_utc_ts = dateTimeUTC($row_positions['servertime']);  //date_recv_utc_ts
