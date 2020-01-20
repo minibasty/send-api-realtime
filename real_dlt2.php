@@ -54,9 +54,10 @@ function real_dlt2($configKey, $configValue)
                 // ค่า attributes แปลง Json
                 $attributesJson = get_jsonattributes($row_positions['attributes']);
 
-
                 if (property_exists($attributesJson, 'driverUniqueId')) {
                     $driverLicense = get_driverId($attributesJson->driverUniqueId, $position_id);  //driverLicense
+                }else{
+                    $driverLicense = '';
                 }
 
                 $date_utc_ts = dateTimeUTC($row_positions['devicetime']); //date_utc_ts
