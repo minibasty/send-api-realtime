@@ -69,7 +69,7 @@ function get_driverId($licenseParam, $position)
     require 'config_positions.php';
     $countStr = strlen($licenseParam);
 
-    if ($countStr >= 96) {
+    if ($countStr >= 92) {
         
         //";6007643200200516551=220119571016=?+             22            1            0069552  20302                     ???"
         //";6007641200100638801=201219960426=?+             12            1            0064560  20300                     ?"
@@ -114,13 +114,14 @@ function get_driverId($licenseParam, $position)
         $license = substr($licenseParam, 4, 44);
         $license = str_replace(' ', '', trim($license));
         return $license;
-    } elseif ($countStr == 74 or $countStr == 77 or $countStr == 75 or $countStr == 78 or $countStr == 72 or $countStr == 36 $countStr == 71) {
+    } elseif ($countStr >= 35 or $countStr <= 78) {
         // count 72 //"          22            1            0002461  60602                     "
         // count 75 //"             23            1            0002261  60501                     "
         // count 74 //"            23            1            0002149  40900                     "
         // count 78 //"             2400            1            54000927  40900                     "
         // count 36 //"22       1            0021256  50203"
         // count 71 //"%       24            1            0002762  40700                     ?"
+        // count 35 //"22      1            0021256  50203"
         $license = $licenseParam;
         $license = str_replace(' ', '', trim($license));
         return $license;
